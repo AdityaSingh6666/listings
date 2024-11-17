@@ -153,16 +153,6 @@ def load_listing_main_ids():
     except FileNotFoundError:
         return set()
 
-def delete_existing_entry(listing_id):
-    try:
-        response = es.delete_by_query(index="listings_main",body={"query": {"term": {"listingId.keyword": listing_id}}})
-        if response['deleted'] > 0:
-            logger.info(f"Deleted {response['deleted']} existing entry(s) for listing_id {listing_id}")
-        else:
-            logger.info(f"No existing entry found for listing_id {listing_id}")
-    except Exception as e:
-        logger.error(f"Failed to delete existing entry for {listing_id}: {e}")
-
 def delete_duplicates(index_name):
     query = {
         "query": {
